@@ -27,7 +27,7 @@ function preload(this: Scene) {
 }
 
 function create(this: Scene) {
-  this.add.image(400, 300, 'sky');
+  this.add.image(300, 200, 'sky');
 
   const particles = this.add.particles('red');
 
