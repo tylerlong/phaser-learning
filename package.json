@@ -2,7 +2,8 @@
   "name": "phaser-learning",
   "license": "MIT",
   "scripts": {
-    "server": "webpack-dev-server --progress --colors"
+    "server": "webpack-dev-server --progress --colors",
+    "build": "webpack --progress --colors"
   },
   "dependencies": {
     "phaser": "^3.23.0"
