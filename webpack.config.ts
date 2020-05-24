@@ -3,6 +3,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import webpack from 'webpack';
 
 const config: webpack.Configuration = {
+  devtool: 'source-map',
   entry: ['./src/index.ts'],
   plugins: [new HtmlWebpackPlugin({title: 'Phaser Learning'})],
 };
