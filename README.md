@@ -1,3 +1,3 @@
 # Phaser Learning
 
-Learn some [Phaser](https://github.com/photonstorm/phaser)
+Learn some [Phaser](https://github.com/photonstorm/phaser).
