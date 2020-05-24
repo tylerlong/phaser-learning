@@ -1,13 +1,7 @@
 {
+  "name": "phaser-learning",
   "license": "MIT",
   "scripts": {
-    "check": "gts check",
-    "clean": "gts clean",
-    "compile": "tsc",
-    "fix": "gts fix",
-    "prepare": "yarn run compile",
-    "pretest": "yarn run compile",
-    "posttest": "yarn run check",
     "server": "webpack-dev-server --progress --colors"
   },
   "dependencies": {
