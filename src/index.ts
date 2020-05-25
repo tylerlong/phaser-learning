@@ -1,47 +1,119 @@
 import Phaser, {Scene} from 'phaser';
+import skyImg from './assets/sky.png';
+import groundImg from './assets/platform.png';
+import starImg from './assets/star.png';
+import bombImg from './assets/bomb.png';
+import dudeImg from './assets/dude.png';
 
 const config = {
   type: Phaser.AUTO,
-  width: 600,
-  height: 400,
+  width: 800,
+  height: 600,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: {y: 200},
+      gravity: {y: 300},
+      debug: false,
     },
   },
   scene: {
     preload: preload,
     create: create,
+    update: update,
   },
 };
 
 new Phaser.Game(config);
 
-function preload(this: Scene) {
-  this.load.setBaseURL('http://labs.phaser.io');
+let cursors: Phaser.Types.Input.Keyboard.CursorKeys;
+let player: Phaser.Physics.Arcade.Sprite;
+let platforms: Phaser.Physics.Arcade.StaticGroup;
+let stars: Phaser.Physics.Arcade.Group;
 
-  this.load.image('sky', 'assets/skies/space3.png');
-  this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-  this.load.image('red', 'assets/particles/red.png');
+function preload(this: Scene) {
+  this.load.image('sky', skyImg);
+  this.load.image('ground', groundImg);
+  this.load.image('star', starImg);
+  this.load.image('bomb', bombImg);
+  this.load.spritesheet('dude', dudeImg, {
+    frameWidth: 32,
+    frameHeight: 48,
+  });
 }
 
 function create(this: Scene) {
-  this.add.image(300, 200, 'sky');
+  this.add.image(400, 300, 'sky');
 
-  const particles = this.add.particles('red');
+  platforms = this.physics.add.staticGroup();
 
-  const emitter = particles.createEmitter({
-    speed: 100,
-    scale: {start: 1, end: 0},
-    blendMode: 'ADD',
+  platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+  platforms.create(600, 400, 'ground');
+  platforms.create(50, 250, 'ground');
+  platforms.create(750, 220, 'ground');
+
+  player = this.physics.add.sprite(100, 450, 'dude');
+
+  player.setBounce(0.3);
+  player.setCollideWorldBounds(true);
+  this.physics.add.collider(player, platforms);
+
+  this.anims.create({
+    key: 'left',
+    frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
+    frameRate: 10,
+    repeat: -1,
   });
 
-  const logo = this.physics.add.image(400, 100, 'logo');
+  this.anims.create({
+    key: 'turn',
+    frames: [{key: 'dude', frame: 4}],
+    frameRate: 20,
+  });
 
-  logo.setVelocity(100, 200);
-  logo.setBounce(1, 1);
-  logo.setCollideWorldBounds(true);
+  this.anims.create({
+    key: 'right',
+    frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
+    frameRate: 10,
+    repeat: -1,
+  });
 
-  emitter.startFollow(logo);
+  cursors = this.input.keyboard.createCursorKeys();
+
+  stars = this.physics.add.group({
+    key: 'star',
+    repeat: 11,
+    setXY: {x: 12, y: 0, stepX: 70},
+  });
+
+  stars.children.iterate((child: any) => {
+    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+  });
+
+  this.physics.add.collider(stars, platforms);
+
+  this.physics.add.overlap(player, stars, collectStar as any, undefined, this);
+}
+
+function update(this: Scene) {
+  if (cursors.left?.isDown) {
+    player.setVelocityX(-160);
+    player.anims.play('left', true);
+  } else if (cursors.right?.isDown) {
+    player.setVelocityX(160);
+    player.anims.play('right', true);
+  } else {
+    player.setVelocityX(0);
+    player.anims.play('turn');
+  }
+  if (cursors.up?.isDown && player.body.touching.down) {
+    player.setVelocityY(-330);
+  }
+}
+
+function collectStar(
+  player: Phaser.Physics.Arcade.Sprite,
+  star: Phaser.Physics.Arcade.Image
+) {
+  star.disableBody(true, true);
 }
