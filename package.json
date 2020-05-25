@@ -16,6 +16,7 @@
     "file-loader": "^6.0.0",
     "gts": "^2.0.2",
     "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
     "raw-loader": "^4.0.1",
     "terser-webpack-plugin": "^3.0.1",
     "ts-loader": "^7.0.5",
@@ -26,5 +27,8 @@
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^4.2.2",
     "yarn-upgrade-all": "^0.5.2"
+  },
+  "husky": {
+    "pre-push": "yarn gts fix"
   }
 }
