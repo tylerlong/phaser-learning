@@ -86,13 +86,15 @@ function create(this: Scene) {
     setXY: {x: 12, y: 0, stepX: 70},
   });
 
-  stars.children.iterate((child: any) => {
-    child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+  stars.children.iterate(child => {
+    (child as Phaser.Physics.Arcade.Image).setBounceY(
+      Phaser.Math.FloatBetween(0.4, 0.8)
+    );
   });
 
   this.physics.add.collider(stars, platforms);
 
-  this.physics.add.overlap(player, stars, collectStar as any, undefined, this);
+  this.physics.add.overlap(player, stars, collectStar, undefined, this);
 }
 
 function update(this: Scene) {
@@ -112,8 +114,8 @@ function update(this: Scene) {
 }
 
 function collectStar(
-  player: Phaser.Physics.Arcade.Sprite,
-  star: Phaser.Physics.Arcade.Image
+  player: Phaser.GameObjects.GameObject,
+  star: Phaser.GameObjects.GameObject
 ) {
-  star.disableBody(true, true);
+  (star as Phaser.Physics.Arcade.Image).disableBody(true, true);
 }
