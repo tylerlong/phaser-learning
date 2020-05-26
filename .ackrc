@@ -1,2 +1,4 @@
+--ignore-dir=build
+--ignore-dir=.vscode
 --ignore-dir=docs
 --ignore-file=match:/^yarn\.lock$/

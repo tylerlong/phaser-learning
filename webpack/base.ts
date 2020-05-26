@@ -36,6 +36,9 @@ const config: webpack.Configuration = {
       title: 'Phaser Learning',
     }),
   ],
+  resolve: {
+    extensions: ['.js', '.ts'], // so that you can `import './main'` instead of `import './main.ts'`.
+  },
 };
 
 export default config;
