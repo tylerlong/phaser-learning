@@ -29,6 +29,8 @@ let cursors: Phaser.Types.Input.Keyboard.CursorKeys;
 let player: Phaser.Physics.Arcade.Sprite;
 let platforms: Phaser.Physics.Arcade.StaticGroup;
 let stars: Phaser.Physics.Arcade.Group;
+let score = 0;
+let scoreText: Phaser.GameObjects.Text;
 
 function preload(this: Scene) {
   this.load.image('sky', skyImg);
@@ -95,6 +97,11 @@ function create(this: Scene) {
   this.physics.add.collider(stars, platforms);
 
   this.physics.add.overlap(player, stars, collectStar, undefined, this);
+
+  scoreText = this.add.text(16, 16, 'Score: 0', {
+    fontSize: '32px',
+    fill: '#000',
+  });
 }
 
 function update(this: Scene) {
@@ -118,4 +125,6 @@ function collectStar(
   star: Phaser.GameObjects.GameObject
 ) {
   (star as Phaser.Physics.Arcade.Image).disableBody(true, true);
+  score += 10;
+  scoreText.setText('Score: ' + score);
 }
