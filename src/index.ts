@@ -31,6 +31,8 @@ let platforms: Phaser.Physics.Arcade.StaticGroup;
 let stars: Phaser.Physics.Arcade.Group;
 let score = 0;
 let scoreText: Phaser.GameObjects.Text;
+let bombs: Phaser.Physics.Arcade.Group;
+let gameOver = false;
 
 function preload(this: Scene) {
   this.load.image('sky', skyImg);
@@ -102,9 +104,18 @@ function create(this: Scene) {
     fontSize: '32px',
     fill: '#000',
   });
+
+  bombs = this.physics.add.group();
+
+  this.physics.add.collider(bombs, platforms);
+
+  this.physics.add.collider(player, bombs, hitBomb, undefined, this);
 }
 
 function update(this: Scene) {
+  if (gameOver) {
+    return;
+  }
   if (cursors.left?.isDown) {
     player.setVelocityX(-160);
     player.anims.play('left', true);
@@ -121,10 +132,39 @@ function update(this: Scene) {
 }
 
 function collectStar(
-  player: Phaser.GameObjects.GameObject,
+  _player: Phaser.GameObjects.GameObject,
   star: Phaser.GameObjects.GameObject
 ) {
   (star as Phaser.Physics.Arcade.Image).disableBody(true, true);
   score += 10;
   scoreText.setText('Score: ' + score);
+
+  if (stars.countActive(true) === 0) {
+    //  A new batch of stars to collect
+    stars.children.iterate(_child => {
+      const child = _child as Phaser.Physics.Arcade.Image;
+      child.enableBody(true, child.x, 0, true, true);
+    });
+
+    const x =
+      player.x < 400
+        ? Phaser.Math.Between(400, 800)
+        : Phaser.Math.Between(0, 400);
+
+    const bomb = bombs.create(x, 16, 'bomb');
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+    bomb.allowGravity = false;
+  }
+}
+
+function hitBomb(this: Scene) {
+  this.physics.pause();
+
+  player.setTint(0xff0000);
+
+  player.anims.play('turn');
+
+  gameOver = true;
 }
