@@ -3,7 +3,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server --progress --colors --config webpack/base.ts",
-    "build": "webpack --progress --colors --config webpack/prod.ts"
+    "build": "webpack --progress --colors --config webpack/prod.ts",
+    "generate": "ts-node -r dotenv-override-true/config src/assets/generate.ts"
   },
   "dependencies": {
     "phaser": "^3.23.0"
@@ -13,12 +14,14 @@
     "@types/terser-webpack-plugin": "^2.2.0",
     "@types/webpack-merge": "^4.1.5",
     "clean-webpack-plugin": "^3.0.0",
+    "dotenv-override-true": "^6.2.0",
     "file-loader": "^6.0.0",
     "gts": "^2.0.2",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
+    "liberated-pixel-cup": "^0.2.2",
     "raw-loader": "^4.0.1",
-    "terser-webpack-plugin": "^3.0.1",
+    "terser-webpack-plugin": "^3.0.2",
     "ts-loader": "^7.0.5",
     "ts-node": "^8.10.1",
     "typescript": "^3.9.3",

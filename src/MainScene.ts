@@ -4,7 +4,12 @@ import skyImg from './assets/sky.png';
 import groundImg from './assets/platform.png';
 import starImg from './assets/star.png';
 import bombImg from './assets/bomb.png';
-import dudeImg from './assets/dude.png';
+// eslint-disable-next-line node/no-unpublished-import
+import dudeLeftImg from './assets/generated/dude/walk-w.png';
+// eslint-disable-next-line node/no-unpublished-import
+import dudeRightImg from './assets/generated/dude/walk-e.png';
+// eslint-disable-next-line node/no-unpublished-import
+import dudeImg from './assets/generated/dude/walk-s.png';
 
 class MainScene extends Phaser.Scene {
   cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -21,9 +26,17 @@ class MainScene extends Phaser.Scene {
     this.load.image('ground', groundImg);
     this.load.image('star', starImg);
     this.load.image('bomb', bombImg);
+    this.load.spritesheet('dudeLeft', dudeLeftImg, {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
+    this.load.spritesheet('dudeRight', dudeRightImg, {
+      frameWidth: 64,
+      frameHeight: 64,
+    });
     this.load.spritesheet('dude', dudeImg, {
-      frameWidth: 32,
-      frameHeight: 48,
+      frameWidth: 64,
+      frameHeight: 64,
     });
   }
 
@@ -46,20 +59,20 @@ class MainScene extends Phaser.Scene {
 
     this.anims.create({
       key: 'left',
-      frames: this.anims.generateFrameNumbers('dude', {start: 0, end: 3}),
+      frames: this.anims.generateFrameNumbers('dudeLeft', {start: 0, end: 8}),
       frameRate: 10,
       repeat: -1,
     });
 
     this.anims.create({
       key: 'turn',
-      frames: [{key: 'dude', frame: 4}],
+      frames: [{key: 'dude', frame: 0}],
       frameRate: 20,
     });
 
     this.anims.create({
       key: 'right',
-      frames: this.anims.generateFrameNumbers('dude', {start: 5, end: 8}),
+      frames: this.anims.generateFrameNumbers('dudeRight', {start: 0, end: 8}),
       frameRate: 10,
       repeat: -1,
     });
