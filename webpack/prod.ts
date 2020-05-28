@@ -13,8 +13,8 @@ const config: webpack.Configuration = merge(base, {
   },
   devtool: false,
   performance: {
-    maxEntrypointSize: 1000000,
-    maxAssetSize: 1000000,
+    maxEntrypointSize: 2000000,
+    maxAssetSize: 2000000,
   },
   optimization: {
     minimizer: [
