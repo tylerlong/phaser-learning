@@ -2,7 +2,7 @@
   "name": "phaser-learning",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --progress --colors --config webpack/base.ts",
+    "serve": "webpack-dev-server --progress --colors --config webpack/base.ts",
     "build": "webpack --progress --colors --config webpack/prod.ts",
     "generate": "ts-node -r dotenv-override-true/config src/assets/generate.ts"
   },
